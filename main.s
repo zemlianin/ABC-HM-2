@@ -39,12 +39,12 @@ main:
 	mov	rbp, rsp
 	sub	rsp, 208
 	
-	mov	DWORD PTR -196[rbp], edi # Запись параметров в стек
-	mov	QWORD PTR -208[rbp], rsi
+	mov	r14d, edi 		# Запись параметров в стек
+	mov	r15, rsi
 	
 	mov	DWORD PTR -12[rbp], 0 	# Запись 0 в стек
 	
-	lea	rax, .LC0[rip]		# Запись парааетров метода принт в регистр
+	lea	rax, .LC0[rip]		# Запись параметров метода принт в регистр
 	mov	rdi, rax
 	call	puts@PLT		# Вызов принт
 	
@@ -119,13 +119,13 @@ main:
 	cmp	eax, 3
 	jne	.L8
 	mov	DWORD PTR -36[rbp], 26		# Рэндж = 26
-	cmp	DWORD PTR -196[rbp], 1		# Сравнить колличестов переданных в мэйн параметров с 1
+	cmp	r14d, 1		# Сравнить колличестов переданных в мэйн параметров с 1
 	jg	.L9
 	lea	rax, .LC7[rip]			# Запись в параметр рандом строчки 0
 	mov	QWORD PTR -24[rbp], rax
 	jmp	.L10
 .L9:
-	mov	rax, QWORD PTR -208[rbp]
+	mov	rax, r15
 	mov	rax, QWORD PTR 8[rax]
 	mov	QWORD PTR -24[rbp], rax		# Запись в параметр рандома параметр запуска
 .L10:

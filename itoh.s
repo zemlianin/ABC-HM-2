@@ -1,40 +1,25 @@
-	.file	"itoh.c"
-	.intel_syntax noprefix
+
+	.intel_syntax noprefix 			# Начало новой секции
 	.text
-	.globl	itoh
+	.globl	itoh				# Объявление функции
 	.type	itoh, @function
 itoh:
-	endbr64
-	push	rbp
+	
+	push	rbp				# Начало метода
 	mov	rbp, rsp
-	mov	DWORD PTR -4[rbp], edi
-	cmp	DWORD PTR -4[rbp], 9
-	jg	.L2
-	mov	eax, DWORD PTR -4[rbp]
-	add	eax, 48
+	
+	mov	r13d, edi		# Запсиь параметра в стек
+	
+	cmp	r13d, 9		# Сравнение парамметра с 9
+	jg	.L2				# Прыжок в точку 2 
+	
+	mov	eax, r13d		# Прибавление к параметру смвола 0
+	add	eax, 48		
 	jmp	.L3
 .L2:
-	mov	eax, DWORD PTR -4[rbp]
+	mov	eax, r13d		# Прибавление к парметру символа А
 	add	eax, 55
 .L3:
-	pop	rbp
+	pop	rbp				# Завершение метода
 	ret
 	.size	itoh, .-itoh
-	.ident	"GCC: (Ubuntu 11.2.0-19ubuntu1) 11.2.0"
-	.section	.note.GNU-stack,"",@progbits
-	.section	.note.gnu.property,"a"
-	.align 8
-	.long	1f - 0f
-	.long	4f - 1f
-	.long	5
-0:
-	.string	"GNU"
-1:
-	.align 8
-	.long	0xc0000002
-	.long	3f - 2f
-2:
-	.long	0x3
-3:
-	.align 8
-4:
