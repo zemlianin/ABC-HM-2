@@ -1,44 +1,15 @@
-	.file	"main.c"
 	.intel_syntax noprefix
-	.text
-	.section	.rodata
+	.text				# Начало новой секции 
+	.section	.rodata		# Объявление строк
 .LC0:
-	.string	"%s"
-	.text
-	.globl	main2
-	.type	main2, @function
-main2:
-	endbr64
-	push	rbp
-	mov	rbp, rsp
-	sub	rsp, 16
-	movabs	rax, 478560413032
-	mov	QWORD PTR -12[rbp], rax
-	mov	DWORD PTR -4[rbp], 0
-	mov	DWORD PTR -16[rbp], 5
-	lea	rdx, -16[rbp]
-	lea	rax, -12[rbp]
-	mov	rsi, rdx
-	mov	rdi, rax
-	call	Task@PLT
-	lea	rax, -12[rbp]
-	mov	rsi, rax
-	lea	rax, .LC0[rip]
-	mov	rdi, rax
-	mov	eax, 0
-	call	printf@PLT
-	mov	eax, 0
-	leave
-	ret
-	.size	main2, .-main2
-	.section	.rodata
-.LC1:
 	.string	"input size"
-.LC2:
+.LC1:
 	.string	"%d"
 	.align 8
-.LC3:
+.LC2:
 	.string	"input command: \n 1 - read from file \n 2 - read from console\n 3 - Random\n 0 - Testing"
+.LC3:
+	.string	"%s"
 .LC4:
 	.string	"r"
 .LC5:
@@ -61,258 +32,251 @@ main2:
 .LC13:
 	.string	"output command: \n 1 - write B to file \n 2 - write B to console"
 	.text
-	.globl	main
+	.globl	main			# Объявление функции мэйн
 	.type	main, @function
 main:
-	endbr64
-	push	rbp
+	push	rbp			# Начало метода
 	mov	rbp, rsp
 	sub	rsp, 208
-	mov	DWORD PTR -196[rbp], edi
+	
+	mov	DWORD PTR -196[rbp], edi # Запись параметров в стек
 	mov	QWORD PTR -208[rbp], rsi
-	mov	DWORD PTR -12[rbp], 0
-	lea	rax, .LC1[rip]
+	
+	mov	DWORD PTR -12[rbp], 0 	# Запись 0 в стек
+	
+	lea	rax, .LC0[rip]		# Запись парааетров метода принт в регистр
 	mov	rdi, rax
-	call	puts@PLT
-	lea	rax, -180[rbp]
-	mov	rsi, rax
-	lea	rax, .LC2[rip]
-	mov	rdi, rax
+	call	puts@PLT		# Вызов принт
+	
+	lea	rsi, -180[rbp]		# Запись параметров метода скан в регистр и вызов метода скан
+	lea	rdi, .LC1[rip]
 	mov	eax, 0
 	call	__isoc99_scanf@PLT
-	lea	rax, .LC3[rip]
-	mov	rsi, rax
-	lea	rax, .LC0[rip]
-	mov	rdi, rax
+	
+	lea	rsi, .LC2[rip]		# Запись параметров метода принт в регистр и вызов принт 
+	lea	rdi, .LC3[rip]
 	mov	eax, 0
 	call	printf@PLT
-	lea	rax, -184[rbp]
-	mov	rsi, rax
-	lea	rax, .LC2[rip]
-	mov	rdi, rax
+	
+	
+	lea	rsi, -184[rbp]
+	lea	rdi, .LC1[rip]
 	mov	eax, 0
-	call	__isoc99_scanf@PLT
-	mov	eax, DWORD PTR -184[rbp]
-	cmp	eax, 1
-	jne	.L4
-	lea	rax, .LC4[rip]
-	mov	rsi, rax
-	lea	rax, .LC5[rip]
-	mov	rdi, rax
-	call	fopen@PLT
-	mov	QWORD PTR -32[rbp], rax
-	mov	DWORD PTR -4[rbp], 0
-	jmp	.L5
-.L6:
-	lea	rdx, -176[rbp]
-	mov	eax, DWORD PTR -4[rbp]
-	cdqe
-	add	rdx, rax
-	mov	rax, QWORD PTR -32[rbp]
-	lea	rcx, .LC6[rip]
-	mov	rsi, rcx
-	mov	rdi, rax
-	mov	eax, 0
-	call	__isoc99_fscanf@PLT
-	add	DWORD PTR -4[rbp], 1
-.L5:
-	mov	eax, DWORD PTR -180[rbp]
-	cmp	DWORD PTR -4[rbp], eax
-	jl	.L6
+	call	__isoc99_scanf@PLT	# Запись параметров метода скан в регистр и вызов метода скан
+	
+	mov	eax, DWORD PTR -184[rbp]	# Запись комманд в регистр	
+	cmp	eax, 1				#  Сравнение комманд с 1
+	jne	.L2				#  При неравенстве прыжок в точку 2
+	
+	lea	rsi, .LC4[rip]			# ЗАпись параметров в регситры
+	lea	rdi, .LC5[rip]
+	call	fopen@PLT			# Вызов метода открытия потока
+	
+	mov	QWORD PTR -32[rbp], rax		# Запись результата работы метода в переменную  инпут
+	mov	DWORD PTR -4[rbp], 0		# Присвоение параметру цикла 0
+	jmp	.L3
 .L4:
-	mov	eax, DWORD PTR -184[rbp]
-	cmp	eax, 2
-	jne	.L7
-	mov	DWORD PTR -4[rbp], 0
-	jmp	.L8
-.L9:
-	lea	rdx, -176[rbp]
+	lea	rdx, -176[rbp]			# Запись адреса массива А в регистр
+	mov	eax, DWORD PTR -4[rbp]		# Запись параметра в регистр
+	add	rdx, rax			# Получение значения элеммента с индексом ай
+	mov	rdi, QWORD PTR -32[rbp]
+
+	lea	rcx, .LC6[rip]			# Запись параметров метода скан в регистры
+	mov	rsi, rcx
+	mov	eax, 0
+	call	__isoc99_fscanf@PLT		# Вызов метода скан
+	
+	add	DWORD PTR -4[rbp], 1		# Счетчик цикла++
+.L3:
+	mov	eax, DWORD PTR -180[rbp]	# Запись переменной сайз в регистр
+	cmp	DWORD PTR -4[rbp], eax		# Сравнение ее с параметром цикла
+	jl	.L4				# Прыжок в тточку 4
+.L2:
+	mov	eax, DWORD PTR -184[rbp]	# Запись комманд в регистр
+	cmp	eax, 2				# Сравнение комманд с 2
+	jne	.L5
+	mov	DWORD PTR -4[rbp], 0		# Присвоение переменной ай 0
+	jmp	.L6
+.L7:
+	lea	rdx, -176[rbp]			# Запись адреса массива А в регистр
 	mov	eax, DWORD PTR -4[rbp]
-	cdqe
-	add	rax, rdx
-	mov	rsi, rax
-	lea	rax, .LC6[rip]
+	add	rax, rdx			# Получение текущего элемента массива
+	mov	rsi, rax			# Запись результата в регистр
+	
+	
+	lea	rax, .LC6[rip]			# Запись параметров метода скан в регситр
 	mov	rdi, rax
 	mov	eax, 0
-	call	__isoc99_scanf@PLT
-	add	DWORD PTR -4[rbp], 1
-.L8:
-	mov	eax, DWORD PTR -180[rbp]
-	cmp	DWORD PTR -4[rbp], eax
-	jl	.L9
-.L7:
-	mov	eax, DWORD PTR -184[rbp]
+	call	__isoc99_scanf@PLT		# Вызов метода скан
+	
+	add	DWORD PTR -4[rbp], 1		# ай++
+.L6:
+	mov	eax, DWORD PTR -180[rbp]	# Запись сайз в регистр
+	cmp	DWORD PTR -4[rbp], eax		# Сравнение параметра цикла с сайз
+	jl	.L7
+.L5:
+	mov	eax, DWORD PTR -184[rbp]	# Сравнить комманд с 3
 	cmp	eax, 3
-	jne	.L10
-	mov	DWORD PTR -36[rbp], 26
-	cmp	DWORD PTR -196[rbp], 1
-	jg	.L11
-	lea	rax, .LC7[rip]
+	jne	.L8
+	mov	DWORD PTR -36[rbp], 26		# Рэндж = 26
+	cmp	DWORD PTR -196[rbp], 1		# Сравнить колличестов переданных в мэйн параметров с 1
+	jg	.L9
+	lea	rax, .LC7[rip]			# Запись в параметр рандом строчки 0
 	mov	QWORD PTR -24[rbp], rax
-	jmp	.L12
-.L11:
+	jmp	.L10
+.L9:
 	mov	rax, QWORD PTR -208[rbp]
 	mov	rax, QWORD PTR 8[rax]
-	mov	QWORD PTR -24[rbp], rax
-.L12:
-	mov	esi, DWORD PTR -180[rbp]
+	mov	QWORD PTR -24[rbp], rax		# Запись в параметр рандома параметр запуска
+.L10:
+	mov	esi, DWORD PTR -180[rbp]	# ЗАпись параметров метода ранд в регитсры
 	lea	rcx, -176[rbp]
 	mov	edx, DWORD PTR -36[rbp]
-	mov	rax, QWORD PTR -24[rbp]
-	mov	rdi, rax
-	call	Rand@PLT
-.L10:
-	mov	eax, DWORD PTR -184[rbp]
+	mov	rdi, QWORD PTR -24[rbp]
+	call	Rand@PLT			# Запучк метода ранд
+.L8:
+	mov	eax, DWORD PTR -184[rbp]	# Запись комманд в регистр и сранение его с 0
 	test	eax, eax
-	jne	.L13
-	mov	eax, DWORD PTR -180[rbp]
-	mov	DWORD PTR -188[rbp], eax
-	lea	rax, .LC4[rip]
-	mov	rsi, rax
-	lea	rax, .LC8[rip]
-	mov	rdi, rax
+	jne	.L11
+	
+	mov	eax, DWORD PTR -180[rbp]	# СайзН = Сайз
+	mov	DWORD PTR -188[rbp], eax	
+	
+	lea	rsi, .LC4[rip]			#  Запись параметров в регистр и запуск метода открытия потока
+	lea	rdi, .LC8[rip]
+	call	fopen@PLT			
+	
+	mov	QWORD PTR -32[rbp], rax		# Запись результата метода открытия потка в переменную инпут
+		
+	lea	rsi, .LC9[rip]			# Запуск метода открытия потока
+	lea	rdi, .LC10[rip]
 	call	fopen@PLT
-	mov	QWORD PTR -32[rbp], rax
-	lea	rax, .LC9[rip]
-	mov	rsi, rax
-	lea	rax, .LC10[rip]
-	mov	rdi, rax
-	call	fopen@PLT
-	mov	QWORD PTR -48[rbp], rax
-	mov	DWORD PTR -4[rbp], 0
-	jmp	.L14
-.L17:
-	mov	DWORD PTR -8[rbp], 0
-	jmp	.L15
-.L16:
+	
+	mov	QWORD PTR -48[rbp], rax		#  Запуск метода открытия потока вывода и запись результата в аутпут
+	
+	mov	DWORD PTR -4[rbp], 0		#  Значение парметра цикла = 0
+	jmp	.L12
+.L15:	
+	mov	DWORD PTR -8[rbp], 0		#  Значение жи = 0
+	jmp	.L13
+.L14:
 	lea	rdx, -176[rbp]
 	mov	eax, DWORD PTR -4[rbp]
-	cdqe
-	add	rdx, rax
-	mov	rax, QWORD PTR -32[rbp]
-	lea	rcx, .LC6[rip]
-	mov	rsi, rcx
-	mov	rdi, rax
+	add	rdx, rax			#  Расчет значения элемента массива А
+	mov	rdi, QWORD PTR -32[rbp]		#  Запись инпут в регистр
+	
+	lea	rsi, .LC6[rip]			# Запись параметров метода скан в регистр и запуск метода скан
 	mov	eax, 0
 	call	__isoc99_fscanf@PLT
-	add	DWORD PTR -8[rbp], 1
-.L15:
-	mov	eax, DWORD PTR -180[rbp]
-	cmp	DWORD PTR -8[rbp], eax
-	jl	.L16
-	call	clock@PLT
-	mov	QWORD PTR -56[rbp], rax
-	lea	rdx, -188[rbp]
-	lea	rax, -176[rbp]
-	mov	rsi, rdx
-	mov	rdi, rax
-	call	Task@PLT
-	call	clock@PLT
-	mov	QWORD PTR -64[rbp], rax
-	mov	rax, QWORD PTR -64[rbp]
-	mov	edx, eax
+	
+	add	DWORD PTR -8[rbp], 1		# жи++
+.L13:
+	mov	eax, DWORD PTR -180[rbp]	#  Запись сайз в регистр
+	cmp	DWORD PTR -8[rbp], eax		#  Сравнение сайз с жи
+	jl	.L14
+	
+	call	clock@PLT			#  Запуск метода клок
+	mov	QWORD PTR -56[rbp], rax		#  Запись результата в бегин
+	lea	rsi, -188[rbp]			# Запись параметров в регистры
+	lea	rdi, -176[rbp]
+	call	Task@PLT			#  Вызов метода таск
+	call	clock@PLT			#  Вызов метода клок
+	mov	QWORD PTR -64[rbp], rax		#  Запись результата клок в енд
+	
+	mov	edx, eax			#  Нахождениие разности между енд и бегин
 	mov	rax, QWORD PTR -56[rbp]
 	mov	ecx, eax
 	mov	eax, edx
 	sub	eax, ecx
-	mov	edx, eax
-	mov	rax, QWORD PTR -48[rbp]
-	lea	rcx, .LC2[rip]
-	mov	rsi, rcx
-	mov	rdi, rax
+	
+	mov	edx, eax			
+	
+	mov	rdi, QWORD PTR -48[rbp]
+	lea	rsi, .LC1[rip]
 	mov	eax, 0
-	call	fprintf@PLT
-	mov	rax, QWORD PTR -64[rbp]
-	mov	edx, eax
-	mov	rax, QWORD PTR -56[rbp]
-	mov	ecx, eax
-	mov	eax, edx
-	sub	eax, ecx
-	add	DWORD PTR -12[rbp], eax
-	mov	rax, QWORD PTR -48[rbp]
-	mov	rsi, rax
+	call	fprintf@PLT			# Запуск метода принт
+	
+	mov	edx, QWORD PTR -64[rbp]		# Нахождение разности между енд и бегин
+	mov	ecx, QWORD PTR -56[rbp]
+	sub	edx, ecx			
+	
+	add	DWORD PTR -12[rbp], edx		# Прибавить к сумме времен новое время
+	
+	mov	rsi, QWORD PTR -48[rbp]		# Заполнении регистров и вызов принт	
 	mov	edi, 10
 	call	fputc@PLT
-	add	DWORD PTR -4[rbp], 1
-.L14:
-	cmp	DWORD PTR -4[rbp], 49
-	jle	.L17
-	lea	rax, .LC11[rip]
-	mov	rsi, rax
-	lea	rax, .LC0[rip]
-	mov	rdi, rax
+	
+	add	DWORD PTR -4[rbp], 1		# Параметр цикла++
+.L12:
+	cmp	DWORD PTR -4[rbp], 49		# Сравнение параметра с 50
+	jle	.L15
+	
+	lea	rsi, .LC11[rip]			# Заполнение регистров параметрами
+	lea	rdi, .LC3[rip]
 	mov	eax, 0
-	call	printf@PLT
-	mov	eax, DWORD PTR -12[rbp]
-	mov	esi, eax
-	lea	rax, .LC2[rip]
-	mov	rdi, rax
+	call	printf@PLT			# Вызов принт
+	
+	mov	esi, DWORD PTR -12[rbp]		# Заполнение регистров параметрами
+	lea	rdi, .LC1[rip]
 	mov	eax, 0
-	call	printf@PLT
+	call	printf@PLT			# Вызов принт
+	
 	mov	eax, 0
-	jmp	.L25
-.L13:
-	lea	rdx, -180[rbp]
-	lea	rax, -176[rbp]
-	mov	rsi, rdx
-	mov	rdi, rax
-	call	Task@PLT
-	lea	rax, .LC9[rip]
-	mov	rsi, rax
-	lea	rax, .LC12[rip]
-	mov	rdi, rax
-	call	fopen@PLT
-	mov	QWORD PTR -48[rbp], rax
-	lea	rax, .LC13[rip]
-	mov	rdi, rax
+	jmp	.L23				# Прыжок в конец программы 
+.L11:
+	lea	rsi, -180[rbp]			# Запись массива и сайз в регистр
+	lea	rdi, -176[rbp]
+	call	Task@PLT			# Запуск метода таск
+	
+	lea	rsi, .LC9[rip]			# Запись параметров в регистры
+	lea	rdi, .LC12[rip]			
+	call	fopen@PLT			# Открытие потока
+	mov	QWORD PTR -48[rbp], rax		# Запись потока в аутпут
+	
+	lea	rdi, .LC13[rip]			# Запуск метода принт
 	call	puts@PLT
-	lea	rax, -184[rbp]
-	mov	rsi, rax
-	lea	rax, .LC2[rip]
-	mov	rdi, rax
+	
+	lea	rsi, -184[rbp]			#  Запись параметров в регистры
+	lea	rdi, .LC1[rip]
 	mov	eax, 0
-	call	__isoc99_scanf@PLT
-	mov	eax, DWORD PTR -184[rbp]
+	call	__isoc99_scanf@PLT		#  Запуск метода скан
+	
+	mov	eax, DWORD PTR -184[rbp]	# Сравнение комманд с 1
 	cmp	eax, 1
-	jne	.L19
-	mov	DWORD PTR -4[rbp], 0
-	jmp	.L20
-.L21:
-	mov	eax, DWORD PTR -4[rbp]
-	cdqe
-	movzx	eax, BYTE PTR -176[rbp+rax]
-	movsx	eax, al
-	mov	rdx, QWORD PTR -48[rbp]
-	mov	rsi, rdx
-	mov	edi, eax
-	call	fputc@PLT
-	add	DWORD PTR -4[rbp], 1
-.L20:
-	mov	eax, DWORD PTR -180[rbp]
-	cmp	DWORD PTR -4[rbp], eax
-	jl	.L21
+	jne	.L17
+	mov	DWORD PTR -4[rbp], 0		#  Присвоить параметру 0
+	jmp	.L18
 .L19:
-	mov	eax, DWORD PTR -184[rbp]
-	cmp	eax, 2
-	jne	.L22
-	mov	DWORD PTR -4[rbp], 0
-	jmp	.L23
-.L24:
 	mov	eax, DWORD PTR -4[rbp]
-	cdqe
-	movzx	eax, BYTE PTR -176[rbp+rax]
-	movsx	eax, al
-	mov	edi, eax
-	call	putchar@PLT
-	add	DWORD PTR -4[rbp], 1
-.L23:
-	mov	eax, DWORD PTR -180[rbp]
+	movzx	eax, BYTE PTR -176[rbp+rax]	# Расчет адреса текущего элемента массива
+	movsx	edi, al				# Запись парметров метода принт в регситр
+	mov	rsi, QWORD PTR -48[rbp]
+	call	fputc@PLT			# Вызов метода принт
+	add	DWORD PTR -4[rbp], 1		# Параметр цикла++
+.L18:
+	mov	eax, DWORD PTR -180[rbp]	# Сравнение сайз с параметром цикла
 	cmp	DWORD PTR -4[rbp], eax
-	jl	.L24
+	jl	.L19
+.L17:
+	mov	eax, DWORD PTR -184[rbp]	# Запись комманд в регистр
+	cmp	eax, 2				# Сравнение команд с цифрой 2
+	jne	.L20
+	mov	DWORD PTR -4[rbp], 0		# Обнуление параметра цикла
+	jmp	.L21
 .L22:
+	mov	eax, DWORD PTR -4[rbp]		# Запись параметров в регистры
+	movzx	eax, BYTE PTR -176[rbp+rax]
+	movsx	edi, al
+	call	putchar@PLT			# Вызов метода печати символов
+	
+	add	DWORD PTR -4[rbp], 1		# Параметр цикла++
+.L21:
+	mov	eax, DWORD PTR -180[rbp]	# Сравнение параметра цикла с сайз
+	cmp	DWORD PTR -4[rbp], eax
+	jl	.L22
+.L20:
 	mov	eax, 0
-.L25:
+.L23:
 	leave
 	ret
 	.size	main, .-main
-

@@ -9,7 +9,11 @@ void Task(char *array, int *size)
     int current = 0;
     for (j = 0; j < *size; ++j)
     {
-        if (array[j] == 'a' || array[j] == 'e' || array[j] == 'i' || array[j] == 'u' || array[j] == 'y' || array[j] == 'o' || array[j] == 'A' || array[j] == 'E' || array[j] == 'I' || array[j] == 'U' || array[j] == 'Y' || array[j] == 'O')
+        if (array[j] == 'a' || array[j] == 'e' || array[j] == 'i' || array[j] == 'u' ||
+            array[j] == 'y' || array[j] == 'o' ||
+            array[j] == 'A' || array[j] == 'E' ||
+            array[j] == 'I' || array[j] == 'U' ||
+            array[j] == 'Y' || array[j] == 'O')
         {
             int code = (int)array[j];
             B[current] = '0';
