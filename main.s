@@ -39,8 +39,8 @@ main:
 	mov	rbp, rsp
 	sub	rsp, 208
 	
-	mov	r14d, edi 		# Запись параметров в стек
-	mov	r15, rsi
+	mov	r14d, edi 		# Запись *argc
+	mov	r15, rsi		# Запись *argv
 	
 	mov	DWORD PTR -12[rbp], 0 	# Запись 0 в стек
 	
@@ -196,9 +196,9 @@ main:
 	mov	eax, 0
 	call	fprintf@PLT			# Запуск метода принт
 	
-	mov	edx, QWORD PTR -64[rbp]		# Нахождение разности между енд и бегин
-	mov	ecx, QWORD PTR -56[rbp]
-	sub	edx, ecx			
+	mov	rdx, QWORD PTR -64[rbp]		# Нахождение разности между енд и бегин
+	mov	rcx, QWORD PTR -56[rbp]
+	sub	rdx, rcx			
 	
 	add	DWORD PTR -12[rbp], edx		# Прибавить к сумме времен новое время
 	
