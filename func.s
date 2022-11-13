@@ -10,8 +10,8 @@ Task:
 	sub	rsp, 288
 	
 	
-	mov	r8, rdi	# Запись Параметров в стек
-	mov	r9, rsi
+	mov	r8, rdi	# Запись *array
+	mov	r9, rsi	# Запись *size
 	
 	mov	r10d, 0		# Объявление переменных жи и каррент
 	mov	r11d, 0
