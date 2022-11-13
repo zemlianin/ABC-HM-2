@@ -2,16 +2,17 @@
 ### 1. Удаление ненужных перезаписываний регистров, таких как:
 
 ``` 
-lea	rax, .LC2[rip]
-mov	rsi, rax
+mov	eax, DWORD PTR -8[rbp]
+mov	edi, eax
   ```
   ```
-lea	rax, .LC3[rip] 
-mov	rdi, rax
+lea	ecx, 97[rax]
+mov	eax, DWORD PTR -4[rbp]
+movsx	rdx, eax
   ```
   ```
-lea	rax, .LC1[rip]
-mov	rdi, rax
+mov	eax, DWORD PTR -4[rbp]
+movsx	rdx, eax
 ```
 ```
 lea	rax, .LC0[rip]
@@ -19,35 +20,40 @@ mov	rdi, rax
   ```
   
   ```
-  mov	rax, QWORD PTR -24[rbp]
-lea	rcx, .LC1[rip]
+  mov	edx, DWORD PTR -8[rbp]
+movsx	rdx, edx
+  ```
+  
+  ```
+ mov	eax, DWORD PTR -8[rbp]
+movsx	rdx, eax
+  ```
+  
+  ```
+lea	rax, -184[rbp]
+mov	rsi, rax
+lea	rax, .LC2[rip]
+mov	rdi, rax
+  ```
+  
+  ```
+lea	rdx, -188[rbp]
+lea	rax, -176[rbp]
+mov	rsi, rdx
+mov	rdi, rax
+  ```
+  
+  ```
+ mov	edx, eax
+mov	rax, QWORD PTR -48[rbp]
+lea	rcx, .LC2[rip]
 mov	rsi, rcx
 mov	rdi, rax
   ```
   
   ```
-  add	rax, rdx
+ lea	rax, .LC11[rip]
 mov	rsi, rax
-  ```
-  
-  ```
-  lea	rax, .LC1[rip]
-mov	rdi, rax
-  ```
-  
-  ```
-  lea	rax, .LC6[rip]
-mov	rdi, rax
-  ```
-  
-  ```
-  lea	rax, -860[rbp]
-mov	rsi, rax
-  ```
-  
-  ```
-  lea	rax, -865[rbp]
-mov	rdi, rax
   ```
   
   ```
@@ -65,21 +71,19 @@ mov	rdi, rax
   ```
   
   ```
-mov	rax, QWORD PTR -32[rbp]
-lea	rcx, .LC1[rip]
-mov	rsi, rcx
+lea	rax, -184[rbp]
+mov	rsi, rax
+lea	rax, .LC2[rip]
 mov	rdi, rax
 ```
 
 ```
-mov	rax, QWORD PTR -32[rbp]
+lea	rax, .LC9[rip]
 mov	rsi, rax
 ```
 
 ```
-lea	rcx, -852[rbp]
-lea	rax, -448[rbp]
-mov	rsi, rcx
+lea	rax, .LC12[rip]
 mov	rdi, rax
   ```
   
@@ -105,20 +109,13 @@ mov	rdi, rax
 	.align 8
 4:
 ```
-### 3. Повсеместное удаление макроса cdqe
+### 3. Повсеместное удаление макроса cdqe, cdq
 ### 4. Удаление макроса endbr64
 ### 5. Оптимизация за счет хранения некторых переменных стека в регистре, среди которых:
 ## Main.s:
-* arcs -> r8d
-* argv[] -> r9
-* *input -> r12
-* begin -> r13
-* end -> r14
-* i - неудается заменить, Segmentation fault (core dumped)
-* command - неудается заменить, Segmentation fault (core dumped)
-* size - неудается заменить, Segmentation fault (core dumped)
+
+
 ## func.s:
-* *A -> r14
-* *B -> r15
-* size -> неудается заменить, Segmentation fault (core dumped)
+
+## get-rand-num-func.s:
 
